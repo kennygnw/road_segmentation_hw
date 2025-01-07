@@ -2,8 +2,10 @@ import cv2
 import numpy as np
 import matplotlib.pyplot as plt
 import funcs
+import datetime
 # Example code to run the BFS kernel and store the distance matrix
-image_color = cv2.imread('road_5.jpg')
+filename = 'road_1'
+image_color = cv2.imread(f'{filename}.jpg')
 # rows, cols, dim = image_color.shape
 # if rows > 1280 and cols > 720:
 image_color = cv2.resize(image_color, (1280, 720), interpolation=cv2.INTER_AREA)
@@ -24,6 +26,8 @@ distances =funcs.get_bfs_kernel(sobel_combined_normalized, kernel_size, start_in
 
 # # Save the distances array as a .npy file
 # np.save(f'dist_kern{kernel_size}_strd{stride_size}_sbl{sobel_kern}.npy', distances)
+current_time = datetime.datetime.now().strftime("%Y%m%d_%H_%M_%S")
+np.save(f'{filename}_{current_time}.npy', distances)
 
 # limited_distances = np.clip(distances, -1, 500)
 limited_distances = distances

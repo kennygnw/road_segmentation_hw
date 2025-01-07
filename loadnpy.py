@@ -2,10 +2,10 @@ import matplotlib.pyplot as plt
 import numpy as np
 import cv2
 image = cv2.imread('road_1.jpg')
+# rows, cols, dim = image.shape
+# if rows > 1280 and cols > 720:
+image = cv2.resize(image, (1280, 720), interpolation=cv2.INTER_AREA)
 rows, cols, dim = image.shape
-if rows > 1280 and cols > 720:
-    image = cv2.resize(image, (1280, 720), interpolation=cv2.INTER_AREA)
-    rows, cols, dim = image.shape
 
 distance = np.load('66_80_percent_center_dist_kern23_strd5_sbl19.npy')
 
@@ -48,10 +48,14 @@ red_overlay_masked = cv2.bitwise_and(red_overlay, red_overlay, mask=dilated_mask
 alpha = 0.5  # Transparency factor (0.0: only original, 1.0: only overlay)
 blended_image = cv2.addWeighted(image, 1 - alpha, red_overlay_masked, alpha, 0)
 
+# adaptive_thresh = cv2.adaptiveThreshold(rescaled_array, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, 
+#                                         cv2.THRESH_BINARY, 35, 10)
+
 cv2.imshow('Translucent Red Mask', blended_image)
+cv2.imshow('distance', rescaled_array)
+# cv2.imshow('adpt', adaptive_thresh)
 cv2.waitKey(0)
 cv2.destroyAllWindows()
-
 # plt.figure()
 # # plt.imshow(rescaled_array, cmap='viridis', interpolation='nearest')
 # plt.imshow(dilated_mask,cmap='gray')
